@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Orientation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f3f4f6;
+      color: #333;
+    }
+    .orientation-container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: #ffffff;
+    }
+    h1 {
+      font-size: 1.5em;
+    }
+    .orientation-value {
+      font-size: 1.2em;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orientation-container">
+    <h1>Device Orientation</h1>
+    <p class="orientation-value">Alpha (Z-axis): <span id="alpha">0</span>°</p>
+    <p class="orientation-value">Beta (X-axis): <span id="beta">0</span>°</p>
+    <p class="orientation-value">Gamma (Y-axis): <span id="gamma">0</span>°</p>
+  </div>
+
+  <script>
+    // Check if DeviceOrientationEvent is supported by the browser
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener("deviceorientation", (event) => {
+        // Get the orientation values
+        const alpha = event.alpha ? event.alpha.toFixed(2) : 0;
+        const beta = event.beta ? event.beta.toFixed(2) : 0;
+        const gamma = event.gamma ? event.gamma.toFixed(2) : 0;
+
+        // Display the values in the HTML
+        document.getElementById("alpha").textContent = alpha;
+        document.getElementById("beta").textContent = beta;
+        document.getElementById("gamma").textContent = gamma;
+      });
+    } else {
+      document.body.innerHTML = "<h1>DeviceOrientationEvent is not supported on this device.</h1>";
+    }
+  </script>
+
+</body>
+</html>
