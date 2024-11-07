@@ -39,30 +39,60 @@
     <p class="orientation-value">Alpha (Z-axis): <span id="alpha">0</span>°</p>
     <p class="orientation-value">Beta (X-axis): <span id="beta">0</span>°</p>
     <p class="orientation-value">Gamma (Y-axis): <span id="gamma">0</span>°</p>
+    <button id="permissionButton" style="margin-top: 20px;">Request Orientation Access</button>
   </div>
 
   <script>
     // Initialize variables to store orientation data
     let alpha = 0, beta = 0, gamma = 0;
+    const alphaDisplay = document.getElementById("alpha");
+    const betaDisplay = document.getElementById("beta");
+    const gammaDisplay = document.getElementById("gamma");
+    const permissionButton = document.getElementById("permissionButton");
 
-    // Check if DeviceOrientationEvent is supported by the browser
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientation", (event) => {
-        // Update the variables with the latest orientation values
-        alpha = event.alpha ? event.alpha.toFixed(2) : 0;
-        beta = event.beta ? event.beta.toFixed(2) : 0;
-        gamma = event.gamma ? event.gamma.toFixed(2) : 0;
-      });
-
-      // Update the displayed values every 50ms
-      setInterval(() => {
-        document.getElementById("alpha").textContent = alpha;
-        document.getElementById("beta").textContent = beta;
-        document.getElementById("gamma").textContent = gamma;
-      }, 50);
-    } else {
-      document.body.innerHTML = "<h1>DeviceOrientationEvent is not supported on this device.</h1>";
+    function updateDisplay() {
+      alphaDisplay.textContent = alpha;
+      betaDisplay.textContent = beta;
+      gammaDisplay.textContent = gamma;
     }
+
+    function startOrientationUpdates() {
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener("deviceorientation", (event) => {
+          alpha = event.alpha ? event.alpha.toFixed(2) : 0;
+          beta = event.beta ? event.beta.toFixed(2) : 0;
+          gamma = event.gamma ? event.gamma.toFixed(2) : 0;
+        });
+
+        // Update the display every 50ms
+        setInterval(updateDisplay, 50);
+      } else {
+        alert("DeviceOrientationEvent is not supported on this device.");
+      }
+    }
+
+    // Check if permission is needed for iOS 13+ and some Android versions
+    function requestOrientationPermission() {
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then((permissionState) => {
+            if (permissionState === 'granted') {
+              startOrientationUpdates();
+              permissionButton.style.display = 'none';  // Hide button after permission is granted
+            } else {
+              alert("Permission not granted. Cannot access orientation data.");
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Start immediately if no permission request is required
+        startOrientationUpdates();
+        permissionButton.style.display = 'none';
+      }
+    }
+
+    // Attach event listener to the permission button
+    permissionButton.addEventListener("click", requestOrientationPermission);
   </script>
 
 </body>
