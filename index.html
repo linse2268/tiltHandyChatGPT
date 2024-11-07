@@ -42,19 +42,24 @@
   </div>
 
   <script>
+    // Initialize variables to store orientation data
+    let alpha = 0, beta = 0, gamma = 0;
+
     // Check if DeviceOrientationEvent is supported by the browser
     if (window.DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", (event) => {
-        // Get the orientation values
-        const alpha = event.alpha ? event.alpha.toFixed(2) : 0;
-        const beta = event.beta ? event.beta.toFixed(2) : 0;
-        const gamma = event.gamma ? event.gamma.toFixed(2) : 0;
+        // Update the variables with the latest orientation values
+        alpha = event.alpha ? event.alpha.toFixed(2) : 0;
+        beta = event.beta ? event.beta.toFixed(2) : 0;
+        gamma = event.gamma ? event.gamma.toFixed(2) : 0;
+      });
 
-        // Display the values in the HTML
+      // Update the displayed values every 50ms
+      setInterval(() => {
         document.getElementById("alpha").textContent = alpha;
         document.getElementById("beta").textContent = beta;
         document.getElementById("gamma").textContent = gamma;
-      });
+      }, 50);
     } else {
       document.body.innerHTML = "<h1>DeviceOrientationEvent is not supported on this device.</h1>";
     }
@@ -62,3 +67,4 @@
 
 </body>
 </html>
+
