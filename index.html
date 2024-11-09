@@ -36,9 +36,9 @@
 
   <div class="orientation-container">
     <h1>Device Orientation</h1>
-     <!--  <p class="orientation-value">Alpha (Z-axis): <span id="alpha">0</span>°</p>
- <p class="orientation-value">Beta (X-axis): <span id="beta">0</span>°</p>-->
-    <p class="orientation-value">Gamma (Y-axis): <span id="gamma">0</span>°</p> 
+     <p class="orientation-value">Z-axis: <span id="alpha">0</span>°</p>
+ <p class="orientation-value">X-axis: <span id="beta">0</span>°</p>
+    <p class="orientation-value">Y-axis) <span id="gamma">0</span>°</p> 
     <button id="permissionButton" style="margin-top: 20px;">Request Orientation Access</button>
   </div>
 
@@ -59,13 +59,13 @@
     function startOrientationUpdates() {
       if (window.DeviceOrientationEvent) {
         window.addEventListener("deviceorientation", (event) => {
-          alpha = event.alpha ? event.alpha.toFixed(2) : 0;
-          beta = event.beta ? event.beta.toFixed(2) : 0;
-          gamma = event.gamma ? event.gamma.toFixed(2) : 0;
+          alpha = event.alpha ? event.alpha.toFixed(0) : 0;
+          beta = event.beta ? event.beta.toFixed(0) : 0;
+          gamma = event.gamma ? event.gamma.toFixed(0) : 0;
         });
 
-        // Update the display every 50ms
-        setInterval(updateDisplay, 50);
+        // Update the display every 200ms
+        setInterval(updateDisplay, 200);
       } else {
         alert("DeviceOrientationEvent is not supported on this device.");
       }
